@@ -1,0 +1,14 @@
+gene="ENSG00000270141.3"
+dataDir="/srv/gevaertlab/data/Hong/RNASeq/PANCAN_TCGA/Robj"
+outputDir="/srv/gevaertlab/data/Hong/RNASeq/PANCAN_TCGA/output"
+
+### Run the R script in the normal way
+# Rscript --vanilla /srv/gevaertlab/data/Hong/RNASeq/PANCAN_TCGA/scripts/plotGene_docker.R $gene $dataDir $outputDir
+
+### Build the docker image from "Dockerfile" in the current directory, with the script plotGene_docker.R embedded. The code only needs to be executed once. The image is named "plotgene".
+docker build -t plotgene .
+
+### Run the Rscript "plotGene_docker.R" in docker container, usng the image named 'plotgene' built from above.
+### -v: mount a local directory inside the container
+docker run -v $dataDir:/home/data -v $outputDir:/home/output plotgene Rscript --vanilla plotGene_docker.R $gene "/home/data" "/home/output"
+
